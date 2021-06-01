@@ -1,0 +1,234 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+#header{
+    width: auto;
+    height: 100px;
+    color: white;
+    font-size: 12px;
+    background-color: #fff;
+}
+#header_left{
+    margin-top: 30px;
+    margin-left: 100px;
+}
+#header_left,
+#footer_loGo{
+    float: left;
+    width: 110px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+}
+#header_right{
+    float: right;
+    height: 30px;
+    margin-top: 25px;
+    margin-right: 100px;
+}
+#header_right>div{
+    display: inline-block;
+    width: 110px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    margin-left: 30px;
+}
+#header_right>div,
+#header_left,
+#footer_loGo{
+    background-color: red;
+    border: 1px solid;
+}
+#header_right>img{
+    height: 20px;
+    margin: 10px 10px 0px;
+}
+#main{
+    position:relative;
+    width: auto;
+    height: 1200px;
+    background-color: #F4F8F9;
+}
+#main_a1{
+    position: absolute;
+    margin-top: 60px;
+    margin-left: 100px;
+    font-size: 34px;
+    color: #383D40;
+}
+#main_a2{
+    position: absolute;
+    margin-top: 110px;
+    margin-left: 100px;
+    font-size: small;
+    color: #909495;
+}
+a{
+    text-decoration: none;
+}
+ul li{
+    list-style: none;
+}
+#main_nav{
+    float: right;
+    margin-top: 100px;
+    margin-right: 100px;
+}
+#main_nav>li{
+    float: left;
+    margin-left: 20px;
+    font-weight: bold;
+    font-size: 12px;
+}
+#main_slideshow{
+    position: absolute;
+    width: 560px;
+    height: 290px;
+    margin-top: 200px;
+    margin-left: 100px;
+    background-color: #ffffff;
+}
+#ul1 img{
+    width: 540px;
+    height: 270px;
+}
+#imgBox{
+    position: absolute;
+    width: 540px;
+    height: 270px;
+    margin: 10px 10px;
+    overflow: hidden;
+}
+#imgBox ul {
+    width: 1000%;
+    position: absolute;
+    list-style: none;
+    left:0;
+    top: 0;
+}
+#imgBox li{
+    float: left;
+}
+ol {
+    position: absolute;
+    height: 20px;
+    left: 224px;
+    bottom: 0px;
+    text-align: center;
+    padding: 5px;
+}
+ol li{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: #C1BFC4;
+    margin: 5px;
+    cursor: pointer;
+}
+#arr span{
+    position: absolute;
+    width: 26px;
+    height: 40px;
+    left: 5px;
+    top: 40%;
+    background: #02050C;
+    cursor: pointer;
+    line-height: 40px;
+    text-align: center;
+    font-weight: bold;
+    font-family: '黑体';
+    font-size: 32px;
+    color: #fff;
+    border: 1px solid #02050C;
+}
+#arr #right {
+    right: 5px;
+    left: auto;
+}
+#request{
+    float: left;
+    position: absolute;
+    width: 570px;
+    height: 290px;
+    margin-top: 200px;
+    margin-left: 680px;
+    background-color: #ffffff;
+}
+#request_on{
+    height: 110px;
+    border-bottom: 1px solid #EAEAEA;
+}
+#request_a1{
+    float: left;
+    position: absolute;
+    margin-top: 40px;
+    margin-left: 60px;
+    font-size: 18px;
+    color: #2C2D2F;
+}
+#request_a2{
+    float: left;
+    position: absolute;
+    margin-top: 34px;
+    margin-left: 440px;
+    padding: 10px;
+    color: #858688;
+    border: 1px solid #EAEAEA;
+}
+#request_down{
+    height: 180px;
+}
+#request_down>ul{
+    float: left;
+}
+#request_down>ul>li{
+    height: 60px;
+    line-height: 60px;
+    margin-left: 60px;
+    font-size: small;
+}
+#request_down>ul:last-child{
+    margin-left: 150px;
+}
+#request_down>ul:last-child>li{
+    padding-right: 10px;
+}
+#request_down>ul:last-child>li>a{
+    color: #FEFBFF;
+    font-weight: 400;
+    font-size: 12px;
+    background-color: #58D14B;
+    border-radius: 5%;
+}
+#request_down>ul:last-child>li>b,
+#request_down>ul:last-child>li>a{
+    padding: 10px;
+}
+#main_nav li:hover,
+#footer ul li:hover{
+    cursor: pointer;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #CCCFD0;
+}
+#footer{
+    clear: both;
+    height: 300px;
+    font-size: 12px;
+    color: #E6E7E8;
+    background-color: #202124;
+}
+#footer_loGo{
+    margin: 80px 20px 0px 100px;
+}
+#footer_loGo,
+#footer>ul{
+    float: left;
+}
+#footer>ul{
+    margin: 70px 0px;
+}
+#footer ul li{
+    margin: 10px 50px;
+}
