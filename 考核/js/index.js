@@ -1,8 +1,8 @@
 window.onload = function () {
     //加载echarts图示
-    mapAll("graph", option1);
-    mapAll("pie", option2);
-    mapAll("histogram", option3);
+    mapAll("graph", option1, "https://edu.telking.com/api/?type=month","line");
+    mapAll("pie", option2, "https://edu.telking.com/api/?type=week","pie");
+    mapAll("histogram", option3, "https://edu.telking.com/api/?type=week","bar");
 
 
     /*点击加入li下划线*/
@@ -30,16 +30,16 @@ function f() {
 
     //获取小方块
     for (var i = 0; i < chefElement.list.length; i++) {
-        var liObj=document.createElement("li");
+        var liObj = document.createElement("li");
 
         chefElement.olObj.appendChild(liObj);
-        liObj.setAttribute("index",i);
+        liObj.setAttribute("index", i);
 
         //为按钮注册mouseover事件
-        liObj.onmouseover=function () {
+        liObj.onmouseover = function () {
 
-            chefElement.pic=this.getAttribute("index");
-            animate(chefElement.ulObj,-chefElement.pic*chefElement.imgWidth);
+            chefElement.pic = this.getAttribute("index");
+            animate(chefElement.ulObj, -chefElement.pic * chefElement.imgWidth);
         }
 
     }
@@ -48,17 +48,18 @@ function f() {
     //克隆一个ul中第一个li,加入到ul中的最后=====克隆
     chefElement.ulObj.appendChild(chefElement.ulObj.children[0].cloneNode(true));
 
-    var timeId=setInterval(onmouseclickHandle,1000);
+    var timeId = setInterval(onmouseclickHandle, 1000);
 
     //左右焦点实现点击切换图片功能
-    chefElement.main_slideshow.onmouseover=function () {
+    chefElement.main_slideshow.onmouseover = function () {
         clearInterval(timeId);
     };
-    chefElement.main_slideshow.onmouseout=function () {
-        timeId=setInterval(onmouseclickHandle,1000);
+    chefElement.main_slideshow.onmouseout = function () {
+        timeId = setInterval(onmouseclickHandle, 1000);
     };
 
-    chefElement.right.onclick=onmouseclickHandle;
+    chefElement.right.onclick = onmouseclickHandle;
+
     function onmouseclickHandle() {
         //如果pic的值是5,恰巧是ul中li的个数-1的值,此时页面显示第六个图片,而用户会认为这是第一个图,
         //所以,如果用户再次点击按钮,用户应该看到第二个图片
@@ -70,13 +71,14 @@ function f() {
         chefElement.pic++;//立刻设置pic加1,那么此时用户就会看到第二个图片了
         animate(chefElement.ulObj, -chefElement.pic * chefElement.imgWidth);//pic从0的值加1之后,pic的值是1,然后ul移动出去一个图片
     }
-    chefElement.left.onclick=function () {
-        if (chefElement.pic==0){
-            chefElement.pic=chefElement.list.length-1;
-            chefElement.ulObj.style.left=-chefElement.pic*chefElement.imgWidth+"px";
+
+    chefElement.left.onclick = function () {
+        if (chefElement.pic == 0) {
+            chefElement.pic = chefElement.list.length - 1;
+            chefElement.ulObj.style.left = -chefElement.pic * chefElement.imgWidth + "px";
         }
         chefElement.pic--;
-        animate(chefElement.ulObj,-chefElement.pic*chefElement.imgWidth);
+        animate(chefElement.ulObj, -chefElement.pic * chefElement.imgWidth);
     };
 
     //设置任意的一个元素,移动到指定的目标位置
@@ -119,12 +121,65 @@ function forLiAll(element) {
 
 
 //加载echarts图示
-//elementId：获取在哪显示的图示的id，option：图示的具体样式
-function mapAll(elementId, option) {
+//elementId：获取在哪显示的图示的id，option：图示的具体样式 url数据接口 type图形
+function mapAll(elementId, option, url,type) {
     var dom = document.getElementById(elementId);
     var myChart = echarts.init(dom);
 
     var option = option;
+
+    if (url != null) {
+        function ajax(url) {
+            return new Promise(function (resolve, reject) {
+                var req = new XMLHttpRequest();
+                req.open('GET', url, true);
+                req.onload = function () {
+                    if (req.status === 200) {
+                        //使用JSON.parse方法将json字符串解析称为json对象
+                        resolve(JSON.parse(req.responseText));
+                    } else {
+                        reject(new Error(req.statusText));
+                    }
+                };
+                req.onerror = function () {
+                    reject(new Error(req.statusText));
+                };
+                req.send();
+            });
+        }
+
+        if (type == "line" || type == "bar") {
+            ajax(url).then(function onFulfilled(data) {
+                myChart.setOption({
+                    xAxis: {
+                        data: data.data.xAxis
+                    },
+                    series: {
+                        data: data.data.series
+                    }
+                });
+            }).catch(function onRejected(error) {
+                document.write('错误：' + error);
+            });
+        } else if (type == "pie") {
+            ajax(url).then(function onFulfilled(data) {
+                var list = [];
+                for (i = 0; i < data.data.xAxis.length; i++) {
+                    var obj = new Object();
+                    obj.name = data.data.xAxis[i];
+                    obj.value = data.data.series[i];
+                    list.push(obj);
+                }
+                myChart.setOption({
+                    series: {
+                        data: list
+                    }
+                });
+            }).catch(function onRejected(error) {
+                document.write('错误：' + error);
+            });
+        }
+    }
 
     if (option && typeof option === 'object') {
         myChart.setOption(option);
@@ -146,9 +201,13 @@ var option1 = {
     },
     xAxis: {
         type: 'category',
-        boundaryGap: false,
-        data: ['04/14', '04/15', '04/16', '04/17', '04/18', '04/19', '04/20', '04/21', '04/22', '04/23', '04/24', '04/25', '04/26', '04/27', '04/28', '04/29', '04/30', '05/01', '05/02', '05/03', '05/04', '05/05', '05/06', '05/07', '05/08', '05/09', '05/10', '05/11', '05/12', '05/13'],
+        boundaryGap: true,
+        //data: ['04/14', '04/15', '04/16', '04/17', '04/18', '04/19', '04/20', '04/21', '04/22', '04/23', '04/24', '04/25', '04/26', '04/27', '04/28', '04/29', '04/30', '05/01', '05/02', '05/03', '05/04', '05/05', '05/06', '05/07', '05/08', '05/09', '05/10', '05/11', '05/12', '05/13'],
+        data: [],
         axisTick: {
+            show: false
+        },
+        axisLine: {
             show: false
         }
     },
@@ -159,7 +218,8 @@ var option1 = {
         }
     },
     series: [{
-        data: [6091, 3180, 5118, 6973, 4192, 1850, 8556, 8188, 3210, 4818, 8474, 565, 8924, 3842, 7975, 9102, 6816, 6612, 5936, 4516, 5557, 6668, 6130, 1085, 9484, 1389, 7702, 3009, 8413, 4327],
+        //data: [6091, 3180, 5118, 6973, 4192, 1850, 8556, 8188, 3210, 4818, 8474, 565, 8924, 3842, 7975, 9102, 6816, 6612, 5936, 4516, 5557, 6668, 6130, 1085, 9484, 1389, 7702, 3009, 8413, 4327],
+        data: [],
         type: 'line',
         symbol: 'circle',
         label: {
@@ -177,7 +237,7 @@ var option1 = {
         areaStyle: {
             color: '#F3F8FE',
         }
-    }]
+    }],
 };
 
 //定义：饼状图
@@ -199,13 +259,13 @@ var option2 = {
             type: 'pie',
             radius: '65%',
             data: [
-                {value: 5521, name: 'Mon'},
+                /*{value: 5521, name: 'Mon'},
                 {value: 7431, name: 'Tue'},
                 {value: 3138, name: 'Wed'},
                 {value: 6629, name: 'Thu'},
                 {value: 9537, name: 'Fri'},
                 {value: 9228, name: 'Sat'},
-                {value: 7607, name: 'Sun'}
+                {value: 7607, name: 'Sun'}*/
             ]
         }
     ]
@@ -237,8 +297,11 @@ var option3 = {
         {
             color: '#E0E6F1',
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            data: [],
             axisTick: {
+                show: false
+            },
+            axisLine: {
                 show: false
             }
         }
@@ -254,7 +317,7 @@ var option3 = {
             name: '商品数',
             type: 'bar',
             barWidth: '20%',
-            data: [4748, 2537, 5864, 3923, 7402, 2336, 2286]
+            data: []
         }
     ]
 };
